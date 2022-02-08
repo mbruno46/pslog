@@ -1,6 +1,5 @@
 import os
 from datetime import date
-import io
 import sys
 
 from .utils import page, figure
