@@ -126,3 +126,5 @@ class LOG:
                 print('pslog: Converting to PDF')
                 print(out)
                 os.remove(f"{basename}.ps")
+            else:
+                print('pslog: gs command not found. No PDF file generated')
