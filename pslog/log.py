@@ -29,7 +29,9 @@ class stdout_duplicator(object):
 
 
 class LOG:
-    def __init__(self, fmt='a4', fontsize=10):
+    def __init__(self, fname, fmt='a4', fontsize=10):
+        self.basename = os.path.splitext(fname)[0]
+
         self.left = int(2*cm2pt)
         self.top = int(2*cm2pt)
         self.fontsize = fontsize
@@ -123,9 +125,11 @@ class LOG:
         self.page.move_vpos(fig.height)
         os.remove('tmp.eps')
         
-    def save(self, fname, pdf=False):
-        basename = os.path.splitext(fname)[0]
-        with open(f"{basename}.ps", 'w') as f:
+    def flush(self):
+        self.save()
+        
+    def save(self, pdf=False):
+        with open(f"{self.basename}.ps", 'w') as f:
             f.write('%!PS-Adobe-3.0\n')
             f.write(f"<< /PageSize [{self.width} {self.height}] >> setpagedevice\n")
             f.write("\n".join(self.stack))
@@ -134,9 +138,9 @@ class LOG:
             
         if pdf:
             if (os.popen('which gs').read()!=''):
-                out = os.popen(f"gs -o {basename}.pdf -sDEVICE=pdfwrite {basename}.ps").read()
+                out = os.popen(f"gs -o {self.basename}.pdf -sDEVICE=pdfwrite {self.basename}.ps").read()
                 print('pslog: Converting to PDF')
                 print(out)
-                os.remove(f"{basename}.ps")
+                os.remove(f"{self.basename}.ps")
             else:
                 print('pslog: gs command not found. No PDF file generated')

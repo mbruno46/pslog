@@ -1,13 +1,16 @@
 from pslog import LOG
 import matplotlib.pyplot as plt
 
-log = LOG()
+log = LOG('test')
 
 log.make_title()
 
 log.message('Section 1')
 for i in range(10):
     log.message(f"line {i} ads adf df dssf ")
+
+log.flush()
+print(open('test.ps','r').read())
 
 plt.figure()
 plt.plot([1, 2, 3])
@@ -24,4 +27,4 @@ log.end_capture()
 
 print('not captured')
 
-log.save('test', pdf=True)
+log.save(pdf=True)
