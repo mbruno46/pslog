@@ -24,6 +24,9 @@ class stdout_duplicator(object):
         self.terminal.write(message)
         self.log(message.rstrip())
 
+    def flush(self):
+        self.terminal.flush()
+        
 class LOG:
     def __init__(self, fmt='a4', fontsize=10):
         self.left = int(2*cm2pt)
