@@ -22,6 +22,5 @@ log.end_capture()
 
 print('not captured')
 
-log.save('test')
-
+log.save('test', pdf=True)
 # os.remove('test.ps')

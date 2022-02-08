@@ -111,11 +111,18 @@ class LOG:
         self.page.move_vpos(fig.height)
         os.remove('tmp.eps')
         
-    def save(self, fname):
-        fname = fname + ('' if fname[-3:]=='.ps' else '.ps')
-        with open(fname, 'w') as f:
+    def save(self, fname, pdf=False):
+        basename = os.path.splitext(fname)[0]
+        with open(f"{basename}.ps", 'w') as f:
             f.write('%!PS-Adobe-3.0\n')
             f.write(f"<< /PageSize [{self.width} {self.height}] >> setpagedevice\n")
             f.write("\n".join(self.stack))
             f.write("\nshowpage\n")
             f.write("%%EOF")
+            
+        if pdf:
+            if (os.popen('which gs').read()!=''):
+                out = os.popen(f"gs -o {basename}.pdf -sDEVICE=pdfwrite {basename}.ps").read()
+                print('pslog: Converting to PDF')
+                print(out)
+                os.remove(f"{basename}.ps")
