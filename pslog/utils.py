@@ -37,7 +37,7 @@ class figure:
         while (self.ps[0][0:13]!='%%BoundingBox'):
             self.ps.pop(0)
         s = self.ps[0].rstrip().split(" ")
-        self.box = [int(_s) for _s in s[1:]]
+        self.box = [float(_s) for _s in s[1:]]
 
         self.height = self.box[3] - self.box[1]
         self.ps.remove('showpage')

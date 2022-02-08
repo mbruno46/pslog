@@ -26,7 +26,8 @@ class stdout_duplicator(object):
 
     def flush(self):
         self.terminal.flush()
-        
+
+
 class LOG:
     def __init__(self, fmt='a4', fontsize=10):
         self.left = int(2*cm2pt)
@@ -74,7 +75,7 @@ class LOG:
     def push_line(self, line, ofs=0):
         if not self.page.next_line():
             self.new_page()
-        self.stack.append(f"{self.left + ofs} {self.get_vpos():d} moveto")
+        self.stack.append(f"{self.left + ofs} {self.get_vpos()} moveto")
         self.stack.append(f"({line}) show")
         
     def message(self, text, mode='text', fontsize=None, align='left'):
