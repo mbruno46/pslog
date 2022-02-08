@@ -1,8 +1,7 @@
-import pslog
+from pslog import LOG
 import matplotlib.pyplot as plt
-import os
 
-log = pslog.LOG()
+log = LOG()
 
 log.make_title()
 
@@ -23,4 +22,3 @@ log.end_capture()
 print('not captured')
 
 log.save('test', pdf=True)
-# os.remove('test.ps')
