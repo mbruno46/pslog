@@ -16,7 +16,10 @@ log.pyplot_figure(plt)
 log.message('back to text')
 
 log.start_capture()
-print('capturing print')
+
+print('capturing print 1')
+print('capturing print 2')
+
 log.end_capture()
 
 print('not captured')

@@ -16,6 +16,15 @@ paper_size = {
 }
 
 
+class stdout_duplicator(object):
+    def __init__(self, log):
+        self.terminal = sys.stdout
+        self.log = log
+        
+    def write(self, message):
+        self.terminal.write(message)
+        self.log(message.rstrip())
+
 class LOG:
     def __init__(self, fmt='a4', fontsize=10):
         self.left = int(2*cm2pt)
@@ -29,6 +38,7 @@ class LOG:
         self.page = page()
         self.set_page()
         
+        self.stdout_cache = None
 
     def set_page(self):
         self.page.h = self.height - 2*self.top
@@ -83,12 +93,11 @@ class LOG:
             
     def start_capture(self):
         self.stdout_cache = sys.stdout
-        sys.stdout = io.StringIO()
-    
+        sys.stdout = stdout_duplicator(self.message)
+        
     def end_capture(self):
-        output = sys.stdout.getvalue()
-        self.message(output)
         sys.stdout = self.stdout_cache
+        self.stdout_cache = None
         
     def make_title(self, title='Title', author='Author'):
         fs = int(self.fontsize*1.8)
