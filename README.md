@@ -23,7 +23,7 @@ After installation, `pyobs` can be imported like any other package
 Learn by examples.
 
 ```python
-from pslog import LOG
+import pslog
 import matplotlib.pyplot as plt
 
 log = pslog.LOG()
