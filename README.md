@@ -48,3 +48,10 @@ print('not captured')
 
 log.save('test', pdf=True)
 ```
+
+## To-do
+
+When using `print('ciao ', ' mattia')` two separate calls to `sys.stdout.write` are issued
+and as a consequence two different lines are captured by `pslog`, despite the fact that
+the `print` command prints only a single line. This behavior will be fixed in future versions.
+

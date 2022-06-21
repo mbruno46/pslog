@@ -23,6 +23,8 @@ log.start_capture()
 print('capturing print 1')
 print('capturing print 2')
 
+print('testing print', 'multiple','arguments')
+
 log.end_capture()
 
 print('not captured')
