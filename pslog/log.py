@@ -19,10 +19,14 @@ class stdout_duplicator(object):
     def __init__(self, log):
         self.terminal = sys.stdout
         self.log = log
+        self.cache = ''
         
     def write(self, message):
         self.terminal.write(message)
-        self.log(message.rstrip())
+        self.cache += message
+        if (message[-1]=='\n'):
+            self.log(self.cache.rstrip())
+            self.cache = ''
 
     def flush(self):
         self.terminal.flush()

@@ -25,6 +25,8 @@ print('capturing print 2')
 
 print('testing print', 'multiple','arguments')
 
+print('another line')
+
 log.end_capture()
 
 print('not captured')
