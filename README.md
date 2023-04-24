@@ -1,9 +1,9 @@
 # pslog
-A Python utility to create Postscript log files
+A Python utility to create Postscript or PDF log files
 
 ### Authors
 
-Copyright (C) 2022, Mattia Bruno
+Copyright (C) 2022-23, Mattia Bruno
 
 ## Installation
 
@@ -16,7 +16,7 @@ pip install git+https://github.com/mbruno46/pslog.git@main
 pip install -U git+https://github.com/mbruno46/pslog.git@main
 ```
 
-After installation, `pyobs` can be imported like any other package 
+After installation, `pslog` can be imported like any other package 
 
 ## Documentation
 
@@ -48,10 +48,4 @@ print('not captured')
 
 log.save('test', pdf=True)
 ```
-
-## To-do
-
-When using `print('ciao ', ' mattia')` two separate calls to `sys.stdout.write` are issued
-and as a consequence two different lines are captured by `pslog`, despite the fact that
-the `print` command prints only a single line. This behavior will be fixed in future versions.
 
