@@ -28,6 +28,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        sudo apt-get install ghostscript
         python -m pip install --upgrade pip
         pip install matplotlib
         pip install .
