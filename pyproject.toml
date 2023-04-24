@@ -17,3 +17,9 @@ classifiers=[
     "Operating System :: OS Independent",
 ]
 dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = {file = "pslog/VERSION"}
+
+[tool.setuptools.packages.find]
+include = ["pslog*"]
