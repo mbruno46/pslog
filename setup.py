@@ -12,5 +12,6 @@ def version():
     return v
 
 setup(
+    name="pslog",
     version=version(),
 )
