@@ -33,7 +33,7 @@ class stdout_duplicator(object):
 
 
 class LOG:
-    def __init__(self, fname, fmt='a4', fontsize=10):
+    def __init__(self, fname, condition=True, fmt='a4', fontsize=10):
         self.basename = os.path.splitext(fname)[0]
 
         self.left = int(2*cm2pt)
@@ -47,8 +47,15 @@ class LOG:
         self.page = page()
         self.set_page()
         
+        self.condition = condition
         self.stdout_cache = None
 
+    def _decorator(func):
+        def wrapper(self, *args, **kwargs):
+            if self.condition is True:
+                return func(self, *args, **kwargs)
+        return wrapper
+    
     def set_page(self):
         self.page.h = self.height - 2*self.top
         self.page.w = self.width - 2*self.left
@@ -68,22 +75,26 @@ class LOG:
     def get_vpos(self):
         return self.height - self.top - self.page.vpos
     
+    @_decorator
     def new_page(self):
         self.stack.append("showpage")
         self.page.vpos = 0
         
+    @_decorator
     def push_font(self, fs):
         self.stack.append(f"/Courier findfont")
         self.stack.append(f"{fs} scalefont")
         self.stack.append(f"setfont")
         self.page.fontsize = fs
         
+    @_decorator
     def push_line(self, line, ofs=0):
         if not self.page.next_line():
             self.new_page()
         self.stack.append(f"{self.left + ofs} {self.get_vpos()} moveto")
         self.stack.append(f"({line}) show")
         
+    @_decorator
     def message(self, text, mode='text', fontsize=None, align='left'):
         if (self.page.mode != mode):
             self.push_font(self.fontsize if fontsize is None else fontsize)
@@ -100,14 +111,17 @@ class LOG:
             n += nchars
 
             
+    @_decorator
     def start_capture(self):
         self.stdout_cache = sys.stdout
         sys.stdout = stdout_duplicator(self.message)
         
+    @_decorator
     def end_capture(self):
         sys.stdout = self.stdout_cache
         self.stdout_cache = None
         
+    @_decorator
     def make_title(self, title='Title', author='Author'):
         fs = int(self.fontsize*1.8)
         ls = self.page.line_skip
@@ -118,6 +132,7 @@ class LOG:
         self.message(os.uname()[1], 'text', align='right')
         self.page.line_skip = ls
         
+    @_decorator
     def pyplot_figure(self, pyplot):
         self.page.mode = 'figure'
         pyplot.savefig('tmp.eps')
@@ -129,9 +144,11 @@ class LOG:
         self.page.move_vpos(fig.height)
         os.remove('tmp.eps')
         
+    @_decorator
     def flush(self):
         self.save()
         
+    @_decorator
     def save(self, pdf=False):
         with open(f"{self.basename}.ps", 'w') as f:
             f.write('%!PS-Adobe-3.0\n')
